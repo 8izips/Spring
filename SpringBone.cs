@@ -70,7 +70,6 @@ public class SpringBone : MonoBehaviour
         _initialized = true;
     }
 
-    Vector3 _diffTipPos;
     public void Solve(float elapsedTime, in Vector3 externalForce)
     {
         var baseWorldRotation = transform.parent.rotation * _initialRotation;
@@ -143,7 +142,6 @@ public class SpringBone : MonoBehaviour
         childNode?.Solve(elapsedTime, in externalForce);
     }
 
-    public Vector3 DebugMovement;
     void ApplySideLink(SpringBone sideNode, float sideDistance, float acceleration)
     {
         Vector3 linkDirection = _currTipPos - sideNode.transform.position;
@@ -151,8 +149,7 @@ public class SpringBone : MonoBehaviour
         float curSideDistance = linkDirection.magnitude;
         float distanceDiff = curSideDistance - sideDistance;
         Vector3 movement = acceleration * distanceDiff * linkDirection.normalized;
-
-        DebugMovement = movement;
+                
         _currTipPos -= movement * sideLinkForce;
     }
 
