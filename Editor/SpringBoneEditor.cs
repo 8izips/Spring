@@ -40,9 +40,12 @@ public class SpringBoneEditor : Editor
             _instance.DeployChildrenRecursive();
         if (GUILayout.Button("Apply Children")) {
             if (Selection.objects.Length > 1) {
-                for (int i = 0; i < Selection.objects.Length - 1; i++) {
-                    var boneObject = Selection.objects[i] as GameObject;
-                    var bone = boneObject.GetComponent<SpringBone>();
+                for (int i = 0; i < Selection.objects.Length; i++) {                    
+                    SpringBone bone;
+                    if (Selection.objects[i] is SpringBone)
+                        bone = Selection.objects[i] as SpringBone;
+                    else
+                        bone = (Selection.objects[i] as GameObject).GetComponent<SpringBone>();
                     bone?.CopySettingRecursive();
                 }
             }
@@ -69,7 +72,7 @@ public class SpringBoneEditor : Editor
         }
         _instance.sideNodeLeft = (SpringBone)EditorGUILayout.ObjectField("Left Link Target", _instance.sideNodeLeft, typeof(SpringBone), true);
         _instance.sideNodeRight = (SpringBone)EditorGUILayout.ObjectField("Right Link Target", _instance.sideNodeRight, typeof(SpringBone), true);
-        EditorGUILayout.Vector3Field("movement", _instance.DebugMovement);
+        
         EditorGUILayout.BeginHorizontal();
         if (GUILayout.Button("Apply Children")) {
             if (Selection.objects.Length > 1) {
@@ -127,7 +130,7 @@ public class SpringBoneEditor : Editor
         }
         if (GUILayout.Button("Apply Children")) {
             if (Selection.objects.Length > 1) {
-                for (int i = 0; i < Selection.objects.Length - 1; i++) {
+                for (int i = 0; i < Selection.objects.Length; i++) {
                     var boneObject = Selection.objects[i] as GameObject;
                     var bone = boneObject.GetComponent<SpringBone>();
                     bone?.SetCollisionRecursive();

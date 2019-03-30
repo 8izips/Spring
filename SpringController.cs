@@ -12,6 +12,10 @@ public class SpringController : MonoBehaviour
 
     [SerializeField]
     SpringBone[] _rootBones;
+    public SpringBone[] GetRootBones()
+    {
+        return _rootBones;
+    }
 
     void Start()
     {
@@ -48,6 +52,26 @@ public class SpringController : MonoBehaviour
     }
 
 #if UNITY_EDITOR
+    public void ScanRootBones()
+    {
+        Transform[] transforms = transform.GetComponentsInChildren<Transform>();
+        if (transforms == null)
+            return;
+
+        var rootBones = new List<SpringBone>();
+        for (int i = 0; i < transforms.Length; i++) {
+            var bone = transforms[i].gameObject.GetComponent<SpringBone>();
+            if (bone != null) {
+                var parentBone = transforms[i].parent.gameObject.GetComponent<SpringBone>();
+                if (parentBone == null) {
+                    rootBones.Add(bone);
+                }
+            }
+        }
+
+        _rootBones = rootBones.ToArray();
+    }
+
     public enum DrawGizmoMode
     {
         None,
